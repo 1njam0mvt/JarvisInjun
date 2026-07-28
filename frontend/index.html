@@ -9,263 +9,1163 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#050510">
     <title>J.A.R.V.I.S</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <script>
+        (function () {
+            try {
+                var t = localStorage.getItem('jarvis_theme') || 'dark';
+                document.documentElement.setAttribute('data-theme', t);
+            } catch (e) { }
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <div class="app">
-        <div id="orb-container"></div>
-        <header class="header glass-panel">
-            <div class="header-left">
-                <h1 class="logo">J.A.R.V.I.S</h1>
-                <span class="tagline">Just A Rather Very Intelligent System</span>
-            </div>
-            <div class="header-center">
-                <div class="mode-switch mode-switch-single" id="mode-switch">
-                    <div class="mode-slider" id="mode-slider"></div>
-                    <button class="mode-btn active" data-mode="jarvis" id="btn-jarvis"
-                        title="Jarvis — task execution, vision, chat">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                            <path d="M2 17l10 5 10-5" />
-                            <path d="M2 12l10 5 10-5" />
-                        </svg>
-                        <span class="mode-btn-text">Jarvis</span>
-                    </button>
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-top">
+                <div class="orb-badge-wrap">
+                    <div id="orb-container"></div>
+                    <img class="orb-logo-overlay" src="jarvis-logo.png" alt="Jarvis">
                 </div>
+                <button class="btn-icon sidebar-toggle" id="sidebar-toggle" title="Toggle sidebar"
+                    aria-label="Toggle sidebar">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="16" rx="2" />
+                        <line x1="9.5" y1="4" x2="9.5" y2="20" />
+                    </svg>
+                </button>
             </div>
-            <div class="header-right">
-                <div class="status-badge" id="status-badge">
-                    <span class="status-dot"></span>
-                    <span class="status-text">Online</span>
-                </div>
-                <button class="btn-icon activity-toggle" id="activity-toggle" title="View activity flow">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="8" y1="6" x2="21" y2="6" />
-                        <line x1="8" y1="12" x2="21" y2="12" />
-                        <line x1="8" y1="18" x2="21" y2="18" />
-                        <line x1="3" y1="6" x2="3.01" y2="6" />
-                        <line x1="3" y1="12" x2="3.01" y2="12" />
-                        <line x1="3" y1="18" x2="3.01" y2="18" />
-                    </svg>
-                </button>
-                <button class="btn-icon search-results-toggle" id="search-results-toggle" title="View search results"
-                    style="display: none;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8" />
-                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                    </svg>
-                </button>
-                <button class="btn-icon settings-btn" id="settings-btn" title="Settings">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="3" />
-                        <path
-                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
-                    </svg>
-                </button>
-                <button class="btn-icon new-chat-btn" id="new-chat-btn" title="New Chat">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            <button class="sidebar-new-chat" id="new-chat-btn" title="New chat">
+                <span class="sidebar-new-chat-icon">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19" />
                         <line x1="5" y1="12" x2="19" y2="12" />
                     </svg>
-                </button>
-            </div>
-        </header>
-        <aside class="activity-panel glass-panel" id="activity-panel" aria-hidden="true">
-            <div class="activity-header">
-                <h3 class="activity-title">Activity</h3>
-                <button class="activity-close" id="activity-close" title="Close" aria-label="Close activity panel">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18" />
-                        <line x1="6" y1="6" x2="18" y2="18" />
-                    </svg>
-                </button>
-            </div>
-            <div class="activity-list" id="activity-list">
-                <div class="activity-empty" id="activity-empty">Send a message to see the flow here.</div>
-            </div>
-        </aside>
-        <main class="chat-area" id="chat-area">
-            <div class="chat-messages" id="chat-messages">
-                <div class="welcome-screen" id="welcome-screen">
-                    <div class="welcome-icon">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                            <path d="M2 17l10 5 10-5" />
-                            <path d="M2 12l10 5 10-5" />
-                        </svg>
-                    </div>
-                    <h2 class="welcome-title" id="welcome-title">Good evening.</h2>
-                    <p class="welcome-sub">How may I assist you today?</p>
-                    <div class="welcome-chips">
-                        <button class="chip" data-msg="What can you do?">What can you do?</button>
-                        <button class="chip" data-msg="Open YouTube for me">Open YouTube</button>
-                        <button class="chip" data-msg="Tell me a fun fact">Fun fact</button>
-                        <button class="chip" data-msg="Play some music">Play music</button>
-                    </div>
-                </div>
-            </div>
-        </main>
-        <footer class="input-bar glass-panel">
-            <div class="input-wrapper">
-                <textarea id="message-input" placeholder="Ask Jarvis anything..." rows="1" maxlength="32000"></textarea>
-                <div class="input-actions">
-                    <button class="action-btn cam-btn" id="cam-btn" title="Camera — capture and send for vision">
-                        <svg class="cam-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2">
-                            <path
-                                d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-                            <circle cx="12" cy="13" r="4" />
-                        </svg>
-                        <svg class="cam-icon-active" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"
-                            style="display: none;">
-                            <path
-                                d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-                            <circle cx="12" cy="13" r="4" fill="currentColor" />
-                        </svg>
-                    </button>
-                    <button class="action-btn mic-btn" id="mic-btn"
-                        title="Voice input — click to start auto-listen (restarts after each response)">
-                        <svg class="mic-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-                            <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-                            <line x1="12" y1="19" x2="12" y2="23" />
-                            <line x1="8" y1="23" x2="16" y2="23" />
-                        </svg>
-                        <svg class="mic-icon-active" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <rect x="4" y="4" width="16" height="16" rx="3" />
-                        </svg>
-                    </button>
-                    <button class="action-btn tts-btn" id="tts-btn" title="Text to Speech">
-                        <svg class="tts-icon-off" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                            <line x1="23" y1="9" x2="17" y2="15" />
-                            <line x1="17" y1="9" x2="23" y2="15" />
-                        </svg>
-                        <svg class="tts-icon-on" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                            <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
-                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
-                        </svg>
-                    </button>
-                    <button class="action-btn send-btn" id="send-btn" title="Send message">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="22" y1="2" x2="11" y2="13" />
-                            <polygon points="22 2 15 22 11 13 2 9 22 2" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            <div class="input-meta" id="input-meta">
-                <span class="char-count" id="char-count"></span>
-            </div>
-        </footer>
-        <aside class="search-results-widget glass-panel" id="search-results-widget" aria-hidden="true">
-            <div class="search-results-header">
-                <h3 class="search-results-title">Live search</h3>
-                <button class="search-results-close" id="search-results-close" title="Close"
-                    aria-label="Close search results">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18" />
-                        <line x1="6" y1="6" x2="18" y2="18" />
-                    </svg>
-                </button>
-            </div>
-            <div class="search-results-query" id="search-results-query"></div>
-            <div class="search-results-answer" id="search-results-answer"></div>
-            <div class="search-results-list" id="search-results-list"></div>
-        </aside>
-        <div class="settings-panel glass-panel" id="settings-panel" aria-hidden="true">
-            <div class="settings-header">
-                <h3 class="settings-title">Settings</h3>
-                <button class="settings-close btn-icon" id="settings-close" title="Close" aria-label="Close settings">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18" />
-                        <line x1="6" y1="6" x2="18" y2="18" />
-                    </svg>
-                </button>
-            </div>
-            <div class="settings-body">
-                <div class="settings-item">
-                    <label class="settings-label" for="toggle-auto-activity">Auto-open activity panel</label>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="toggle-auto-activity" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                <div class="settings-item">
-                    <label class="settings-label" for="toggle-auto-search">Auto-open search results</label>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="toggle-auto-search" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                <div class="settings-item">
-                    <label class="settings-label" for="toggle-thinking-sounds">Thinking sound effects</label>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="toggle-thinking-sounds" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                <div class="settings-item">
-                    <label class="settings-label" for="toggle-voice-interrupt">Voice interruption</label>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="toggle-voice-interrupt" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                <p class="settings-hint">Activity and search panels open automatically when data is available. Thinking
-                    sounds play a short cue while the AI processes. Voice interruption lets you interrupt the AI by
-                    speaking — it will stop talking and listen to you.</p>
-            </div>
-        </div>
-        <div class="panel-overlay" id="panel-overlay" aria-hidden="true"></div>
-        <div class="speech-widget" id="speech-widget" aria-hidden="true">
-            <div class="speech-widget-inner">
-                <span class="speech-widget-label">Listening...</span>
-                <span class="speech-widget-text" id="speech-widget-text"></span>
-            </div>
-        </div>
-        <div class="toast-container" id="toast-container" aria-live="polite"></div>
-        <div class="cam-panel" id="cam-panel" aria-hidden="true">
-            <div class="cam-panel-header" id="cam-panel-header">
-                <span class="cam-panel-title">
-                    <span class="cam-panel-dot"></span>
-                    Vision
                 </span>
-                <div class="cam-panel-controls">
-                    <label class="cam-panel-vision-mode" title="Vision Mode — attach camera to every message">
-                        <input type="checkbox" id="cam-vision-mode" />
-                        <span class="cam-panel-vision-label">Live</span>
-                    </label>
-                    <button class="cam-panel-btn cam-minimize" id="cam-minimize" title="Minimize">−</button>
-                    <button class="cam-panel-btn cam-close" id="cam-close" title="Close camera">×</button>
+                <span>New chat</span>
+            </button>
+
+            <nav class="sidebar-nav">
+                <button class="sidebar-nav-item active" data-nav="chats">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                    </svg>
+                    <span>Chats</span>
+                </button>
+                <button class="sidebar-nav-item" data-nav="projects">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+                    </svg>
+                    <span>Projects</span>
+                </button>
+                <button class="sidebar-nav-item" data-nav="artifacts">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="7" rx="1.5" />
+                        <rect x="14" y="3" width="7" height="7" rx="1.5" />
+                        <rect x="3" y="14" width="7" height="7" rx="1.5" />
+                        <rect x="14" y="14" width="7" height="7" rx="1.5" />
+                    </svg>
+                    <span>Artifacts</span>
+                </button>
+                <button class="sidebar-nav-item" data-nav="design">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 19l7-7 3 3-7 7-3-3z" />
+                        <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" />
+                        <path d="M2 2l7.586 7.586" />
+                        <circle cx="11" cy="11" r="2" />
+                    </svg>
+                    <span>Design</span>
+                </button>
+                <button class="sidebar-nav-item" data-nav="codex">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="16 18 22 12 16 6" />
+                        <polyline points="8 6 2 12 8 18" />
+                    </svg>
+                    <span>Codex</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-section-label">Recent</div>
+            <div class="sidebar-history" id="sidebar-history">
+                <div class="sidebar-empty">No conversations yet</div>
+            </div>
+            <div class="sidebar-bottom">
+                <div class="account-menu-wrap">
+                    <div class="account-menu" id="account-menu" role="menu">
+                        <button class="account-menu-header account-menu-header-trigger" id="account-add-btn">
+                            <span class="account-menu-avatar">1</span>
+                            <span class="account-menu-header-info">
+                                <span class="account-menu-header-name" id="account-menu-name">1njam0m</span>
+                                <span class="account-menu-header-plan">Free</span>
+                            </span>
+                            <svg class="account-menu-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
+                        </button>
+
+                        <div class="account-menu-divider"></div>
+
+                        <button class="account-menu-item" id="account-upgrade-btn" role="menuitem">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="16 12 12 8 8 12" />
+                                <line x1="12" y1="16" x2="12" y2="8" />
+                            </svg>
+                            <span>Upgrade plan</span>
+                        </button>
+                        <button class="account-menu-item" id="account-personalization-btn" role="menuitem">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="3" />
+                                <path
+                                    d="M12 1v6m0 10v6M4.22 4.22l4.24 4.24m7.08 7.08l4.24 4.24M1 12h6m10 0h6M4.22 19.78l4.24-4.24m7.08-7.08l4.24-4.24" />
+                            </svg>
+                            <span>Personalization</span>
+                        </button>
+                        <button class="account-menu-item" id="account-profile-btn" role="menuitem">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                <circle cx="12" cy="7" r="4" />
+                            </svg>
+                            <span>Profile</span>
+                        </button>
+
+                        <div class="account-menu-divider"></div>
+
+                        <button class="account-menu-item" id="account-settings-item-btn" role="menuitem">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="3" />
+                                <path
+                                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                            </svg>
+                            <span>Settings</span>
+                        </button>
+                        <button class="account-menu-item account-menu-expand" id="account-language-btn" role="menuitem">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="2" y1="12" x2="22" y2="12" />
+                                <path
+                                    d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                            </svg>
+                            <span class="account-menu-item-label">Language</span>
+                            <span class="account-menu-item-value" id="account-language-value">English</span>
+                            <svg class="account-menu-chevron" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
+                        </button>
+                        <button class="account-menu-item account-menu-expand" id="account-help-btn" role="menuitem">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                                <line x1="12" y1="17" x2="12.01" y2="17" />
+                            </svg>
+                            <span class="account-menu-item-label">Help</span>
+                            <svg class="account-menu-chevron" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
+                        </button>
+
+                        <div class="account-menu-divider"></div>
+
+                        <button class="account-menu-item account-menu-danger" id="account-logout-btn" role="menuitem">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                                <polyline points="16 17 21 12 16 7" />
+                                <line x1="21" y1="12" x2="9" y2="12" />
+                            </svg>
+                            <span>Sign out</span>
+                        </button>
+                    </div>
+
+                    <!-- Side flyouts: appear beside the main menu (not replacing it) -->
+                    <div class="account-flyout" id="account-add-flyout" role="menu">
+                        <div class="account-flyout-email" id="account-flyout-email">1njam0mvt@jarvis.ai</div>
+                        <button class="account-lang-item active" id="account-current-account-row">
+                            <span class="account-flyout-account">
+                                <span class="account-menu-avatar account-flyout-avatar">1</span>
+                                <span>1njam0mvt</span>
+                            </span>
+                            <svg class="account-lang-check" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                        </button>
+                        <div class="account-menu-divider"></div>
+                        <button class="account-menu-item" id="account-add-confirm-btn" role="menuitem">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                            </svg>
+                            <span>Add account</span>
+                        </button>
+                    </div>
+
+                    <div class="account-flyout" id="account-lang-flyout" role="menu">
+                        <div class="account-lang-header">
+                            <span>Jarvis speaks</span>
+                        </div>
+                        <div class="account-lang-list" id="account-lang-list">
+                            <!-- populated by JS: 65 languages -->
+                        </div>
+                    </div>
+
+                    <div class="account-flyout" id="account-help-flyout" role="menu">
+                        <button class="account-menu-item" id="help-center-btn" role="menuitem">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                                <line x1="12" y1="17" x2="12.01" y2="17" />
+                            </svg>
+                            <span>Help center</span>
+                        </button>
+                        <button class="account-menu-item" id="release-notes-btn" role="menuitem">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                <path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z" />
+                            </svg>
+                            <span>Release notes</span>
+                        </button>
+                        <button class="account-menu-item" id="keyboard-shortcuts-btn" role="menuitem">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="6" width="20" height="12" rx="2" />
+                                <line x1="6" y1="10" x2="6" y2="10" />
+                                <line x1="10" y1="10" x2="10" y2="10" />
+                                <line x1="14" y1="10" x2="14" y2="10" />
+                                <line x1="18" y1="10" x2="18" y2="10" />
+                                <line x1="8" y1="14" x2="16" y2="14" />
+                            </svg>
+                            <span>Keyboard shortcuts</span>
+                        </button>
+                        <div class="account-menu-divider"></div>
+                        <button class="account-menu-item" id="terms-btn" role="menuitem">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                <polyline points="14 2 14 8 20 8" />
+                                <line x1="16" y1="13" x2="8" y2="13" />
+                                <line x1="16" y1="17" x2="8" y2="17" />
+                            </svg>
+                            <span>Terms of Service</span>
+                        </button>
+                        <button class="account-menu-item" id="privacy-btn" role="menuitem">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="12" y1="16" x2="12" y2="12" />
+                                <line x1="12" y1="8" x2="12.01" y2="8" />
+                            </svg>
+                            <span>Privacy Policy</span>
+                        </button>
+                        <button class="account-menu-item" id="report-bug-btn" role="menuitem">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="8" y="6" width="8" height="14" rx="4" />
+                                <path d="M8 11H4M20 11h-4M9 4l1.5 2M15 4l-1.5 2M6 15H3M21 15h-3M6 19l2-2M18 19l-2-2" />
+                            </svg>
+                            <span>Report a bug</span>
+                        </button>
+                    </div>
+
+                    <button class="sidebar-account" id="sidebar-account-btn" title="Account" aria-haspopup="true"
+                        aria-expanded="false">
+                        <span class="sidebar-account-avatar">1</span>
+                        <span class="sidebar-account-info">
+                            <span class="sidebar-account-name">1njam0m</span>
+                            <span class="sidebar-account-sub">Free plan</span>
+                        </span>
+                        <span class="sidebar-account-bell" id="sidebar-account-bell" title="Notifications">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
+                                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                            </svg>
+                        </span>
+                    </button>
                 </div>
             </div>
-            <div class="cam-panel-body">
-                <video id="cam-video" autoplay playsinline muted></video>
-                <div class="cam-panel-overlay">
-                    <span class="cam-panel-status">Vision ready</span>
+        </aside>
+        <div class="sidebar-scrim" id="sidebar-scrim"></div>
+        <div class="workspace">
+            <header class="header glass-panel">
+                <div class="header-left">
+                    <div class="plan-menu-wrap">
+                        <button class="title-plan-trigger" id="title-plan-trigger" aria-haspopup="true"
+                            aria-expanded="false">
+                            <h1 class="logo">J.A.R.V.I.S</h1>
+                            <span class="plan-badge" id="plan-badge">Free</span>
+                        </button>
+                        <span class="tagline">Just A Rather Very Intelligent System</span>
+                        <div class="plan-menu" id="plan-menu" role="menu">
+                            <button class="plan-menu-item active" data-plan="Free" role="menuitem">
+                                <span class="plan-menu-item-main">
+                                    <span class="plan-menu-item-name">Free</span>
+                                    <span class="plan-menu-item-desc">Core Jarvis features</span>
+                                </span>
+                                <svg class="plan-check" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                            </button>
+                            <button class="plan-menu-item" data-plan="Upgrade" role="menuitem">
+                                <span class="plan-menu-item-main">
+                                    <span class="plan-menu-item-name">Upgrade to Pro</span>
+                                    <span class="plan-menu-item-desc">Priority speed &amp; deeper tasks</span>
+                                </span>
+                                <svg class="plan-check" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-center">
+                    <div class="mode-switch mode-switch-single" id="mode-switch">
+                        <div class="mode-slider" id="mode-slider"></div>
+                        <button class="mode-btn active" data-mode="jarvis" id="btn-jarvis"
+                            title="Jarvis — task execution, vision, chat">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                                <path d="M2 17l10 5 10-5" />
+                                <path d="M2 12l10 5 10-5" />
+                            </svg>
+                            <span class="mode-btn-text">Jarvis</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button class="btn-icon theme-toggle-btn" id="theme-toggle-badge" title="Toggle light / dark mode"
+                        aria-label="Toggle light and dark mode">
+                        <svg id="theme-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                        </svg>
+                    </button>
+                    <div class="status-badge" id="status-badge">
+                        <span class="status-dot"></span>
+                        <span class="status-text">Online</span>
+                    </div>
+                    <button class="btn-icon activity-toggle" id="activity-toggle" title="View activity flow">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="8" y1="6" x2="21" y2="6" />
+                            <line x1="8" y1="12" x2="21" y2="12" />
+                            <line x1="8" y1="18" x2="21" y2="18" />
+                            <line x1="3" y1="6" x2="3.01" y2="6" />
+                            <line x1="3" y1="12" x2="3.01" y2="12" />
+                            <line x1="3" y1="18" x2="3.01" y2="18" />
+                        </svg>
+                    </button>
+                    <button class="btn-icon search-results-toggle" id="search-results-toggle"
+                        title="View search results" style="display: none;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                    </button>
+                    <div class="settings-menu-wrap">
+                        <button class="btn-icon settings-btn" id="settings-btn" title="Settings">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="3" />
+                                <path
+                                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                            </svg>
+                        </button>
+                        <div class="settings-panel" id="settings-panel" aria-hidden="true">
+                            <div class="settings-header">
+                                <h3 class="settings-title">Settings</h3>
+                                <button class="settings-close btn-icon" id="settings-close" title="Close"
+                                    aria-label="Close settings">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <line x1="18" y1="6" x2="6" y2="18" />
+                                        <line x1="6" y1="6" x2="18" y2="18" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="settings-body">
+                                <div class="settings-item">
+                                    <label class="settings-label" for="toggle-auto-activity">Auto-open activity
+                                        panel</label>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggle-auto-activity" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <div class="settings-item">
+                                    <label class="settings-label" for="toggle-auto-search">Auto-open search
+                                        results</label>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggle-auto-search" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <div class="settings-item">
+                                    <label class="settings-label" for="toggle-thinking-sounds">Thinking sound
+                                        effects</label>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggle-thinking-sounds" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <div class="settings-item">
+                                    <label class="settings-label" for="toggle-voice-interrupt">Voice
+                                        interruption</label>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggle-voice-interrupt" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <p class="settings-hint">Activity and search panels open automatically when data is
+                                    available. Thinking sounds play a short cue while the AI processes. Voice
+                                    interruption lets you interrupt the AI by speaking.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="explore-menu-wrap">
+                        <button class="btn-icon explore-toggle" id="explore-toggle" title="Explore" aria-haspopup="true"
+                            aria-expanded="false">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="7" rx="1.5" />
+                                <rect x="14" y="3" width="7" height="7" rx="1.5" />
+                                <rect x="3" y="14" width="7" height="7" rx="1.5" />
+                                <rect x="14" y="14" width="7" height="7" rx="1.5" />
+                            </svg>
+                        </button>
+                        <div class="explore-menu" id="explore-menu" role="menu">
+                            <button class="explore-menu-item active" data-topic="Discover" role="menuitem">
+                                <span class="explore-menu-icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+                                    </svg>
+                                </span>
+                                <span>Discover</span>
+                            </button>
+                            <button class="explore-menu-item" data-topic="Finance" role="menuitem">
+                                <span class="explore-menu-icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="12" y1="1" x2="12" y2="23" />
+                                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                                    </svg>
+                                </span>
+                                <span>Finance</span>
+                            </button>
+                            <button class="explore-menu-item" data-topic="Academic" role="menuitem">
+                                <span class="explore-menu-icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 10L12 5 2 10l10 5 10-5z" />
+                                        <path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5" />
+                                    </svg>
+                                </span>
+                                <span>Academic</span>
+                            </button>
+                            <button class="explore-menu-item" data-topic="Health" role="menuitem">
+                                <span class="explore-menu-icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path
+                                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                                    </svg>
+                                </span>
+                                <span>Health</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <div class="content-row">
+                <aside class="activity-panel" id="activity-panel" aria-hidden="true">
+                    <div class="activity-header">
+                        <h3 class="activity-title"><span class="activity-live-dot"></span>Activity</h3>
+                        <button class="activity-close" id="activity-close" title="Close"
+                            aria-label="Close activity panel">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="activity-list" id="activity-list">
+                        <div class="activity-empty" id="activity-empty">Send a message to see the flow here.</div>
+                    </div>
+                </aside>
+                <main class="chat-area" id="chat-area">
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="welcome-screen" id="welcome-screen">
+                            <div class="welcome-icon">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                                    <path d="M2 17l10 5 10-5" />
+                                    <path d="M2 12l10 5 10-5" />
+                                </svg>
+                            </div>
+                            <h2 class="welcome-title" id="welcome-title">Good evening.</h2>
+                            <p class="welcome-sub">How may I assist you today?</p>
+                            <div class="welcome-chips">
+                                <button class="chip" data-msg="What can you do?">What can you do?</button>
+                                <button class="chip" data-msg="Open YouTube for me">Open YouTube</button>
+                                <button class="chip" data-msg="Open Gmail for me">Open Gmail</button>
+                                <button class="chip" data-msg="Open Twitter for me">Open Twitter</button>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <aside class="search-results-widget" id="search-results-widget" aria-hidden="true">
+                    <div class="search-results-header">
+                        <h3 class="search-results-title">Live search</h3>
+                        <button class="search-results-close" id="search-results-close" title="Close"
+                            aria-label="Close search results">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="search-results-query" id="search-results-query"></div>
+                    <div class="search-results-answer" id="search-results-answer"></div>
+                    <div class="search-results-list" id="search-results-list"></div>
+                </aside>
+            </div>
+            <footer class="input-bar glass-panel">
+                <div class="model-select-row">
+                    <div class="model-menu-wrap">
+                        <button class="model-select-btn" id="model-select-btn" aria-haspopup="true"
+                            aria-expanded="false">
+                            <span class="model-dot"></span>
+                            <span id="model-select-label">Sonnet 5</span>
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </button>
+                        <div class="model-menu" id="model-menu" role="menu">
+                            <div class="model-menu-group-label">Anthropic</div>
+                            <button class="model-menu-item active" data-model="Sonnet 5" role="menuitem">
+                                <span class="model-menu-item-name">Claude Sonnet 5</span>
+                                <svg class="model-check" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                            </button>
+                            <button class="model-menu-item" data-model="Opus 4.8" role="menuitem">
+                                <span class="model-menu-item-name">Claude Opus 4.8</span>
+                            </button>
+                            <button class="model-menu-item" data-model="Haiku 4.5" role="menuitem">
+                                <span class="model-menu-item-name">Claude Haiku 4.5</span>
+                            </button>
+                            <div class="model-menu-divider"></div>
+                            <div class="model-menu-group-label">OpenAI</div>
+                            <button class="model-menu-item" data-model="GPT-5.2" role="menuitem">
+                                <span class="model-menu-item-name">GPT-5.2</span>
+                            </button>
+                            <div class="model-menu-divider"></div>
+                            <div class="model-menu-group-label">Google</div>
+                            <button class="model-menu-item" data-model="Gemini 3 Pro" role="menuitem">
+                                <span class="model-menu-item-name">Gemini 3 Pro</span>
+                            </button>
+                            <div class="model-menu-divider"></div>
+                            <div class="model-menu-group-label">Other</div>
+                            <button class="model-menu-item" data-model="Sonar" role="menuitem">
+                                <span class="model-menu-item-name">Perplexity Sonar</span>
+                            </button>
+                            <button class="model-menu-item" data-model="Kiro" role="menuitem">
+                                <span class="model-menu-item-name">Kiro</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-wrapper">
+                    <div class="attach-menu-wrap">
+                        <div class="attach-menu" id="attach-menu" role="menu">
+                            <button class="attach-menu-item" id="attach-files-btn" role="menuitem">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+                                </svg>
+                                <span>Add photos &amp; files</span>
+                            </button>
+                            <button class="attach-menu-item" id="attach-image-btn" role="menuitem">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                                    <circle cx="8.5" cy="8.5" r="1.5" />
+                                    <path d="M21 15l-5-5L5 21" />
+                                </svg>
+                                <span>Create image</span>
+                            </button>
+                            <button class="attach-menu-item" id="attach-websearch-btn" role="menuitem">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <line x1="2" y1="12" x2="22" y2="12" />
+                                    <path
+                                        d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                                </svg>
+                                <span>Web search</span>
+                            </button>
+                            <button class="attach-menu-item" id="attach-research-btn" role="menuitem">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="7" />
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                    <line x1="11" y1="8" x2="11" y2="14" />
+                                    <line x1="8" y1="11" x2="14" y2="11" />
+                                </svg>
+                                <span>Deep research</span>
+                            </button>
+                        </div>
+                        <button class="action-btn attach-btn" id="attach-btn" title="Add" aria-haspopup="true"
+                            aria-expanded="false">
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <textarea id="message-input" placeholder="Ask Jarvis anything..." rows="1"
+                        maxlength="32000"></textarea>
+                    <div class="input-actions">
+                        <button class="action-btn cam-btn" id="cam-btn" title="Camera — capture and send for vision">
+                            <svg class="cam-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path
+                                    d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                                <circle cx="12" cy="13" r="4" />
+                            </svg>
+                            <svg class="cam-icon-active" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"
+                                style="display: none;">
+                                <path
+                                    d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                                <circle cx="12" cy="13" r="4" fill="currentColor" />
+                            </svg>
+                        </button>
+                        <button class="action-btn mic-btn" id="mic-btn"
+                            title="Voice input — click to start auto-listen (restarts after each response)">
+                            <svg class="mic-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                                <line x1="12" y1="19" x2="12" y2="23" />
+                                <line x1="8" y1="23" x2="16" y2="23" />
+                            </svg>
+                            <svg class="mic-icon-active" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <rect x="4" y="4" width="16" height="16" rx="3" />
+                            </svg>
+                        </button>
+                        <button class="action-btn tts-btn" id="tts-btn" title="Text to Speech">
+                            <svg class="tts-icon-off" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                                <line x1="23" y1="9" x2="17" y2="15" />
+                                <line x1="17" y1="9" x2="23" y2="15" />
+                            </svg>
+                            <svg class="tts-icon-on" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                                <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                                <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                            </svg>
+                        </button>
+                        <button class="action-btn send-btn" id="send-btn" title="Send message">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="22" y1="2" x2="11" y2="13" />
+                                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="input-meta" id="input-meta">
+                    <span class="char-count" id="char-count"></span>
+                </div>
+            </footer>
+            <div class="panel-overlay" id="panel-overlay" aria-hidden="true"></div>
+            <div class="speech-widget" id="speech-widget" aria-hidden="true">
+                <div class="speech-widget-inner">
+                    <span class="speech-widget-label">Listening...</span>
+                    <span class="speech-widget-text" id="speech-widget-text"></span>
                 </div>
             </div>
-            <div class="cam-panel-resize" id="cam-panel-resize" title="Drag to resize"></div>
+            <div class="toast-container" id="toast-container" aria-live="polite"></div>
+            <div class="cam-panel" id="cam-panel" aria-hidden="true">
+                <div class="cam-panel-header" id="cam-panel-header">
+                    <span class="cam-panel-title">
+                        <span class="cam-panel-dot"></span>
+                        Vision
+                    </span>
+                    <div class="cam-panel-controls">
+                        <label class="cam-panel-vision-mode" title="Vision Mode — attach camera to every message">
+                            <input type="checkbox" id="cam-vision-mode" />
+                            <span class="cam-panel-vision-label">Live</span>
+                        </label>
+                        <button class="cam-panel-btn cam-minimize" id="cam-minimize" title="Minimize">−</button>
+                        <button class="cam-panel-btn cam-close" id="cam-close" title="Close camera">×</button>
+                    </div>
+                </div>
+                <div class="cam-panel-body">
+                    <video id="cam-video" autoplay playsinline muted></video>
+                    <div class="cam-panel-overlay">
+                        <span class="cam-panel-status">Vision ready</span>
+                    </div>
+                </div>
+                <div class="cam-panel-resize" id="cam-panel-resize" title="Drag to resize"></div>
+            </div>
+            <canvas id="cam-canvas" style="display: none;"></canvas>
         </div>
-        <canvas id="cam-canvas" style="display: none;"></canvas>
     </div>
     <script src="orb.js"></script>
     <script src="script.js"></script>
+    <script>
+        (function () {
+            var sidebar = document.getElementById('sidebar');
+            var sidebarToggle = document.getElementById('sidebar-toggle');
+            var themeToggleBadge = document.getElementById('theme-toggle-badge');
+            var themeIcon = document.getElementById('theme-icon');
+            var SUN_PATH = '<circle cx="12" cy="12" r="4"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+            var MOON_PATH = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+
+            var themeTransitionTimer = null;
+
+            function applyTheme(theme, animate) {
+                var root = document.documentElement;
+                if (animate) {
+                    root.classList.add('theme-transitioning');
+                    if (themeTransitionTimer) clearTimeout(themeTransitionTimer);
+                    themeTransitionTimer = setTimeout(function () {
+                        root.classList.remove('theme-transitioning');
+                    }, 450);
+                }
+                root.setAttribute('data-theme', theme);
+                try { localStorage.setItem('jarvis_theme', theme); } catch (e) { }
+                if (themeIcon) themeIcon.innerHTML = theme === 'light' ? SUN_PATH : MOON_PATH;
+                if (themeToggleBadge) themeToggleBadge.setAttribute('aria-pressed', theme === 'light');
+            }
+
+            var current = document.documentElement.getAttribute('data-theme') || 'dark';
+            applyTheme(current, false);
+
+            if (themeToggleBadge) {
+                themeToggleBadge.addEventListener('click', function () {
+                    var next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+                    applyTheme(next, true);
+                });
+            }
+
+            function isMobile() { return window.matchMedia('(max-width: 860px)').matches; }
+
+            // On phones the sidebar starts as a slim always-visible icon rail
+            // instead of hiding fully off-screen, so the toggle is never stranded.
+            if (sidebar && isMobile()) sidebar.classList.add('collapsed');
+
+            if (sidebarToggle && sidebar) {
+                sidebarToggle.addEventListener('click', function () {
+                    sidebar.classList.toggle('collapsed');
+                });
+            }
+
+            var sidebarScrim = document.getElementById('sidebar-scrim');
+            if (sidebarScrim && sidebar) {
+                sidebarScrim.addEventListener('click', function () {
+                    sidebar.classList.add('collapsed');
+                });
+            }
+
+            var accountBtn = document.getElementById('sidebar-account-btn');
+            var accountMenu = document.getElementById('account-menu');
+            var settingsBtn = document.getElementById('settings-btn');
+
+            // ---- generic flyout helper: shared by Add account / Language / Help ----
+            var allFlyoutClosers = [];
+            function closeAllFlyouts() {
+                allFlyoutClosers.forEach(function (fn) { fn(); });
+            }
+            function positionFlyout(flyout, trigger) {
+                if (window.matchMedia('(max-width: 860px)').matches) {
+                    flyout.style.left = '';
+                    flyout.style.top = '';
+                    return;
+                }
+                var rect = trigger.getBoundingClientRect();
+                var left = rect.right + 8;
+                var maxLeft = window.innerWidth - 240 - 12;
+                if (left > maxLeft) left = maxLeft;
+
+                var top = rect.top;
+                var maxTop = window.innerHeight - 360 - 12;
+                if (top > maxTop) top = Math.max(12, maxTop);
+
+                flyout.style.left = left + 'px';
+                flyout.style.top = top + 'px';
+            }
+
+            function setupFlyout(triggerId, flyoutId) {
+                var trigger = document.getElementById(triggerId);
+                var flyout = document.getElementById(flyoutId);
+                if (!trigger || !flyout) return null;
+                function close() { flyout.classList.remove('open'); }
+                function open() {
+                    allFlyoutClosers.forEach(function (fn) { if (fn !== close) fn(); });
+                    positionFlyout(flyout, trigger);
+                    flyout.classList.add('open');
+                }
+                trigger.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    if (flyout.classList.contains('open')) close();
+                    else open();
+                });
+                allFlyoutClosers.push(close);
+                return close;
+            }
+
+            function closeAccountMenu() {
+                if (!accountMenu) return;
+                accountMenu.classList.remove('open');
+                if (accountBtn) accountBtn.setAttribute('aria-expanded', 'false');
+                closeAllFlyouts();
+            }
+
+            if (accountBtn && accountMenu) {
+                accountBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    closeAllPopovers(closeAccountMenu);
+                    var open = accountMenu.classList.toggle('open');
+                    accountBtn.setAttribute('aria-expanded', String(open));
+                    if (!open) closeAllFlyouts();
+                });
+                document.addEventListener('click', function (e) {
+                    var wrap = document.querySelector('.account-menu-wrap');
+                    if (wrap && !wrap.contains(e.target)) closeAccountMenu();
+                });
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape') closeAccountMenu();
+                });
+            }
+
+            var settingsItemBtn = document.getElementById('account-settings-item-btn');
+            if (settingsItemBtn && settingsBtn) {
+                settingsItemBtn.addEventListener('click', function () {
+                    closeAccountMenu();
+                    settingsBtn.click();
+                });
+            }
+
+            var upgradeBtn = document.getElementById('account-upgrade-btn');
+            if (upgradeBtn) {
+                upgradeBtn.addEventListener('click', function () {
+                    closeAccountMenu();
+                    showToastSafe('Upgrade plans are coming soon.');
+                });
+            }
+
+            var profileBtn = document.getElementById('account-profile-btn');
+            if (profileBtn) {
+                profileBtn.addEventListener('click', function () {
+                    closeAccountMenu();
+                    showToastSafe('Profile is coming soon.');
+                });
+            }
+
+            var personalizationBtn = document.getElementById('account-personalization-btn');
+            if (personalizationBtn) {
+                personalizationBtn.addEventListener('click', function () {
+                    closeAccountMenu();
+                    showToastSafe('Personalization is coming soon.');
+                });
+            }
+
+            // ---- Add account flyout ----
+            setupFlyout('account-add-btn', 'account-add-flyout');
+            var addConfirmBtn = document.getElementById('account-add-confirm-btn');
+            if (addConfirmBtn) {
+                addConfirmBtn.addEventListener('click', function () {
+                    closeAccountMenu();
+                    showToastSafe('Adding another account is coming soon.');
+                });
+            }
+            var currentAccountRow = document.getElementById('account-current-account-row');
+            if (currentAccountRow) {
+                currentAccountRow.addEventListener('click', function () { closeAccountMenu(); });
+            }
+
+            // ---- Language flyout: 65 languages Jarvis can speak ----
+            var LANGUAGES = [
+                'English', 'Spanish', 'Mandarin Chinese', 'Hindi', 'French',
+                'Standard Arabic', 'Bengali', 'Portuguese', 'Russian', 'Urdu',
+                'Indonesian', 'German', 'Japanese', 'Swahili', 'Marathi',
+                'Telugu', 'Turkish', 'Tamil', 'Vietnamese', 'Korean',
+                'Italian', 'Persian (Farsi)', 'Gujarati', 'Punjabi', 'Polish',
+                'Ukrainian', 'Malayalam', 'Kannada', 'Thai', 'Dutch',
+                'Burmese', 'Filipino (Tagalog)', 'Romanian', 'Uzbek', 'Greek',
+                'Czech', 'Hungarian', 'Swedish', 'Amharic', 'Zulu',
+                'Nepali', 'Sinhala', 'Khmer', 'Hebrew', 'Finnish',
+                'Danish', 'Norwegian', 'Bulgarian', 'Serbian', 'Croatian',
+                'Slovak', 'Lithuanian', 'Latvian', 'Estonian', 'Slovenian',
+                'Malay', 'Georgian', 'Armenian', 'Azerbaijani', 'Kazakh',
+                'Mongolian', 'Afrikaans', 'Icelandic', 'Somali', 'Hausa'
+            ];
+            var langList = document.getElementById('account-lang-list');
+            var langValue = document.getElementById('account-language-value');
+            var selectedLanguage = 'English';
+            if (langList) {
+                LANGUAGES.forEach(function (lang) {
+                    var btn = document.createElement('button');
+                    btn.className = 'account-lang-item' + (lang === selectedLanguage ? ' active' : '');
+                    btn.setAttribute('role', 'menuitem');
+                    btn.dataset.lang = lang;
+                    btn.innerHTML = '<span>' + lang + '</span>' +
+                        '<svg class="account-lang-check" width="15" height="15" viewBox="0 0 24 24" fill="none" ' +
+                        'stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">' +
+                        '<polyline points="20 6 9 17 4 12"/></svg>';
+                    btn.addEventListener('click', function () {
+                        selectedLanguage = lang;
+                        if (langValue) langValue.textContent = lang;
+                        langList.querySelectorAll('.account-lang-item').forEach(function (i) {
+                            i.classList.remove('active');
+                        });
+                        btn.classList.add('active');
+                        showToastSafe('Jarvis will now speak ' + lang + '.');
+                        closeAccountMenu();
+                    });
+                    langList.appendChild(btn);
+                });
+            }
+            setupFlyout('account-language-btn', 'account-lang-flyout');
+
+            // ---- Help flyout ----
+            setupFlyout('account-help-btn', 'account-help-flyout');
+            var helpFlyoutActions = {
+                'help-center-btn': 'Opening the Help center is coming soon.',
+                'release-notes-btn': 'Release notes are coming soon.',
+                'keyboard-shortcuts-btn': 'Keyboard shortcuts are coming soon.',
+                'terms-btn': 'Terms of Service are coming soon.',
+                'privacy-btn': 'Privacy Policy is coming soon.',
+                'report-bug-btn': 'Bug reporting is coming soon.'
+            };
+            Object.keys(helpFlyoutActions).forEach(function (id) {
+                var el = document.getElementById(id);
+                if (!el) return;
+                el.addEventListener('click', function () {
+                    closeAccountMenu();
+                    showToastSafe(helpFlyoutActions[id]);
+                });
+            });
+
+            var logoutBtn = document.getElementById('account-logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function () {
+                    closeAccountMenu();
+                    showToastSafe('You have been signed out.');
+                });
+            }
+
+            function showToastSafe(msg) {
+                if (typeof showToast === 'function') { showToast(msg); return; }
+                var c = document.getElementById('toast-container');
+                if (!c) return;
+                var el = document.createElement('div');
+                el.className = 'toast toast-visible';
+                el.textContent = msg;
+                c.appendChild(el);
+                setTimeout(function () { el.remove(); }, 4000);
+            }
+
+            var messageInput = document.getElementById('message-input');
+            var sendBtnEl = document.getElementById('send-btn');
+            if (messageInput && sendBtnEl) {
+                var syncSendState = function () {
+                    sendBtnEl.classList.toggle('has-text', messageInput.value.trim().length > 0);
+                };
+                messageInput.addEventListener('input', syncSendState);
+                messageInput.addEventListener('keydown', function () { setTimeout(syncSendState, 0); });
+                sendBtnEl.addEventListener('click', function () { setTimeout(syncSendState, 0); });
+                syncSendState();
+            }
+
+            var navItems = document.querySelectorAll('.sidebar-nav-item');
+            navItems.forEach(function (item) {
+                item.addEventListener('click', function () {
+                    navItems.forEach(function (i) { i.classList.remove('active'); });
+                    item.classList.add('active');
+                });
+            });
+
+            var attachBtn = document.getElementById('attach-btn');
+            var attachMenu = document.getElementById('attach-menu');
+
+            function closeAttachMenu() {
+                if (!attachMenu) return;
+                attachMenu.classList.remove('open');
+                if (attachBtn) attachBtn.setAttribute('aria-expanded', 'false');
+            }
+
+            if (attachBtn && attachMenu) {
+                attachBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    closeAllPopovers(closeAttachMenu);
+                    var open = attachMenu.classList.toggle('open');
+                    attachBtn.setAttribute('aria-expanded', String(open));
+                });
+                document.addEventListener('click', function (e) {
+                    if (!attachMenu.contains(e.target) && e.target !== attachBtn) closeAttachMenu();
+                });
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape') closeAttachMenu();
+                });
+            }
+
+            var attachActions = {
+                'attach-files-btn': 'Attaching photos & files is coming soon.',
+                'attach-image-btn': 'Image creation is coming soon.',
+                'attach-websearch-btn': 'Web search is coming soon.',
+                'attach-research-btn': 'Deep research is coming soon.'
+            };
+            Object.keys(attachActions).forEach(function (id) {
+                var el = document.getElementById(id);
+                if (!el) return;
+                el.addEventListener('click', function () {
+                    closeAttachMenu();
+                    showToastSafe(attachActions[id]);
+                });
+            });
+
+            // ---- generic popover helper: trigger button + menu element, toggled together ----
+            function setupPopover(triggerId, menuId, onSelect) {
+                var trigger = document.getElementById(triggerId);
+                var menu = document.getElementById(menuId);
+                if (!trigger || !menu) return null;
+
+                function close() {
+                    menu.classList.remove('open');
+                    trigger.setAttribute('aria-expanded', 'false');
+                }
+                function isOpen() { return menu.classList.contains('open'); }
+
+                trigger.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    closeAllPopovers(close);
+                    var open = menu.classList.toggle('open');
+                    trigger.setAttribute('aria-expanded', String(open));
+                });
+                document.addEventListener('click', function (e) {
+                    if (!menu.contains(e.target) && e.target !== trigger && !trigger.contains(e.target)) close();
+                });
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape') close();
+                });
+                if (onSelect) {
+                    menu.querySelectorAll('[role="menuitem"]').forEach(function (item) {
+                        item.addEventListener('click', function () {
+                            onSelect(item);
+                            close();
+                        });
+                    });
+                }
+                return close;
+            }
+
+            var allPopoverClosers = [closeAccountMenu, closeAttachMenu];
+            function closeAllPopovers(except) {
+                allPopoverClosers.forEach(function (fn) { if (fn !== except) fn(); });
+            }
+
+            // ---- plan badge (Free / Upgrade) ----
+            var planBadge = document.getElementById('plan-badge');
+            var closePlanMenu = setupPopover('title-plan-trigger', 'plan-menu', function (item) {
+                document.querySelectorAll('#plan-menu .plan-menu-item').forEach(function (i) {
+                    i.classList.remove('active');
+                });
+                item.classList.add('active');
+                var plan = item.getAttribute('data-plan');
+                if (planBadge) planBadge.textContent = plan === 'Upgrade' ? 'Upgrade' : 'Free';
+                if (plan === 'Upgrade') showToastSafe('Upgrade plans are coming soon.');
+            });
+            if (closePlanMenu) allPopoverClosers.push(closePlanMenu);
+
+            // ---- model selector ----
+            var modelLabel = document.getElementById('model-select-label');
+            var closeModelMenu = setupPopover('model-select-btn', 'model-menu', function (item) {
+                document.querySelectorAll('#model-menu .model-menu-item').forEach(function (i) {
+                    i.classList.remove('active');
+                });
+                item.classList.add('active');
+                var model = item.getAttribute('data-model');
+                if (modelLabel) modelLabel.textContent = model;
+                showToastSafe('Now using ' + model + '.');
+            });
+            if (closeModelMenu) allPopoverClosers.push(closeModelMenu);
+
+            // ---- explore / topics menu ----
+            var closeExploreMenu = setupPopover('explore-toggle', 'explore-menu', function (item) {
+                document.querySelectorAll('#explore-menu .explore-menu-item').forEach(function (i) {
+                    i.classList.remove('active');
+                });
+                item.classList.add('active');
+                showToastSafe(item.getAttribute('data-topic') + ' is coming soon.');
+            });
+            if (closeExploreMenu) allPopoverClosers.push(closeExploreMenu);
+
+            // ---- settings panel: script.js owns the open/close toggle itself,
+            // we just fold it into the shared "only one popover open" system ----
+            var settingsPanelEl = document.getElementById('settings-panel');
+            function closeSettingsMenu() {
+                if (settingsPanelEl) settingsPanelEl.classList.remove('open');
+            }
+            if (settingsBtn) {
+                settingsBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    closeAllPopovers(closeSettingsMenu);
+                });
+            }
+            document.addEventListener('click', function (e) {
+                if (!settingsPanelEl) return;
+                if (!settingsPanelEl.contains(e.target) && e.target !== settingsBtn && !settingsBtn.contains(e.target)) {
+                    closeSettingsMenu();
+                }
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') closeSettingsMenu();
+            });
+            allPopoverClosers.push(closeSettingsMenu);
+        })();
+    </script>
 </body>
 
 </html>
